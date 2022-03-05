@@ -58,8 +58,6 @@ const SearchBooks = () => {
     try {
       const response = await searchGoogleBooks(searchInput);
 
-      console.log(response);
-
       if (!response.ok) {
         throw new Error("something went wrong!");
       }
@@ -84,6 +82,7 @@ const SearchBooks = () => {
   };
 
   // create function to handle saving a book to our database
+
   const handleSaveBook = async (bookId) => {
     // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
@@ -111,6 +110,8 @@ const SearchBooks = () => {
           },
         },
       });
+
+      console.log(data);
 
       // try {
       //   const response = await saveBook(bookToSave, token);

@@ -58,6 +58,8 @@ const LoginForm = () => {
       // const { token, user } = await response.json();
       // console.log(user);
 
+      localStorage.setItem("token", data.login.token);
+
       Auth.login(data.login.token);
     } catch (err) {
       console.error(err);

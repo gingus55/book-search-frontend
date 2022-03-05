@@ -5,7 +5,7 @@ import { Form, Button, Alert } from "react-bootstrap";
 // import { createUser } from "../utils/API";
 import Auth from "../utils/auth";
 
-const signup = gql`
+const SIGNUP = gql`
   mutation Mutation($input: AddUserInput!) {
     addUser(input: $input) {
       token
@@ -19,7 +19,7 @@ const signup = gql`
 `;
 
 const SignupForm = () => {
-  const [executeSignup] = useMutation(signup);
+  const [executeSignup] = useMutation(SIGNUP);
   // set initial form state
   const [userFormData, setUserFormData] = useState({
     username: "",

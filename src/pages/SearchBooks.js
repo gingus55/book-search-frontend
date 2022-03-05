@@ -15,7 +15,7 @@ import { saveBookIds, getSavedBookIds } from "../utils/localStorage";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
 
-const saveNewBook = gql`
+const SAVE_NEW_BOOK = gql`
   mutation SaveBook($input: SaveBookInput!) {
     saveBook(input: $input) {
       savedBooks {
@@ -31,7 +31,7 @@ const saveNewBook = gql`
 `;
 
 const SearchBooks = () => {
-  const [executeSaveBook] = useMutation(saveNewBook);
+  const [executeSaveBook] = useMutation(SAVE_NEW_BOOK);
 
   // create state for holding returned google api data
   const [searchedBooks, setSearchedBooks] = useState([]);
@@ -58,6 +58,8 @@ const SearchBooks = () => {
     try {
       const response = await searchGoogleBooks(searchInput);
 
+      console.log(response);
+
       if (!response.ok) {
         throw new Error("something went wrong!");
       }
@@ -70,9 +72,11 @@ const SearchBooks = () => {
         title: book.volumeInfo.title,
         description: book.volumeInfo.description,
         image: book.volumeInfo.imageLinks?.thumbnail || "",
+        link: book.volumeInfo.canonicalVolumeLink || "",
       }));
 
       setSearchedBooks(bookData);
+
       setSearchInput("");
     } catch (err) {
       console.error(err);
@@ -84,9 +88,11 @@ const SearchBooks = () => {
     // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
 
+    console.log(bookToSave);
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
+    console.log(token);
     if (!token) {
       return false;
     }
@@ -94,8 +100,15 @@ const SearchBooks = () => {
     // THIS IS WHERE I NEED TO MUTATE AND SAVE BOOK
     try {
       const { data, error } = await executeSaveBook({
-        variable: {
-          book: bookToSave,
+        variables: {
+          input: {
+            authors: bookToSave.authors,
+            description: bookToSave.description,
+            title: bookToSave.title,
+            bookId: bookToSave.bookId,
+            image: bookToSave.image,
+            link: bookToSave.link,
+          },
         },
       });
 
@@ -107,7 +120,7 @@ const SearchBooks = () => {
       }
 
       // if book successfully saves to user's account, save book id to state
-      setSavedBookIds([...savedBookIds, bookToSave.bookId]);
+      // setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
       console.error(err);
     }

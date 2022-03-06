@@ -1,6 +1,6 @@
 // import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import React, { useState, useEffect } from "react";
 import {
   Jumbotron,
@@ -30,17 +30,37 @@ const GET_ME = gql`
   }
 `;
 
+const DELETE_BOOK = gql`
+  mutation Mutation($bookId: ID!) {
+    removeBook(bookId: $bookId) {
+      username
+      savedBooks {
+        title
+      }
+    }
+  }
+`;
+
 const SavedBooks = () => {
   const userData = useQuery(GET_ME);
+  const [executeDeleteBook] = useMutation(DELETE_BOOK);
 
   const handleDeleteBook = async (bookId) => {
-    console.log("book deleted");
+    const { data, error } = await executeDeleteBook({
+      variables: {
+        input: {
+          bookId: bookId,
+        },
+      },
+    });
+    // const
+    console.log(`book deleted ${bookId}`);
   };
 
   if (userData.loading) {
     return <h2>LOADING...</h2>;
   }
-  console.log(userData);
+  // console.log(userData);
 
   return (
     <>

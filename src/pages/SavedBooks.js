@@ -43,7 +43,12 @@ const DELETE_BOOK = gql`
 `;
 
 const SavedBooks = () => {
+
   const userData = useQuery(GET_ME);
+  
+  useEffect(userData.refetch, []);
+
+  
   const [executeDeleteBook] = useMutation(DELETE_BOOK);
   const handleDeleteBook = async (bookId) => {
     console.log(`book delete ${bookId}`);
@@ -52,6 +57,7 @@ const SavedBooks = () => {
         bookId,
       },
     });
+    userData.refetch();
   };
 
   if (userData.loading) {
@@ -103,6 +109,6 @@ const SavedBooks = () => {
       </Container>
     </>
   );
-};
+};;
 
 export default SavedBooks;

@@ -13,6 +13,7 @@ import {
 // import { getMe, deleteBook } from "../utils/API";
 import Auth from "../utils/auth";
 import { removeBookId } from "../utils/localStorage";
+import { computeHeadingLevel } from "@testing-library/react";
 
 const GET_ME = gql`
   query Query {
@@ -44,17 +45,13 @@ const DELETE_BOOK = gql`
 const SavedBooks = () => {
   const userData = useQuery(GET_ME);
   const [executeDeleteBook] = useMutation(DELETE_BOOK);
-
   const handleDeleteBook = async (bookId) => {
+    console.log(`book delete ${bookId}`);
     const { data, error } = await executeDeleteBook({
       variables: {
-        input: {
-          bookId: bookId,
-        },
+        bookId,
       },
     });
-    // const
-    console.log(`book deleted ${bookId}`);
   };
 
   if (userData.loading) {

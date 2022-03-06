@@ -49,16 +49,11 @@ const LoginForm = () => {
           },
         },
       });
-      // const response = await loginUser(userFormData);
+
 
       if (error) {
         throw new Error("something went wrong!");
       }
-
-      // const { token, user } = await response.json();
-      // console.log(user);
-
-      // localStorage.setItem("token", data.login.token);
 
       Auth.login(data.login.token);
     } catch (err) {

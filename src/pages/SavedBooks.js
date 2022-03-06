@@ -51,7 +51,6 @@ const SavedBooks = () => {
   
   const [executeDeleteBook] = useMutation(DELETE_BOOK);
   const handleDeleteBook = async (bookId) => {
-    console.log(`book delete ${bookId}`);
     const { data, error } = await executeDeleteBook({
       variables: {
         bookId,
@@ -63,7 +62,6 @@ const SavedBooks = () => {
   if (userData.loading) {
     return <h2>LOADING...</h2>;
   }
-  // console.log(userData);
 
   return (
     <>

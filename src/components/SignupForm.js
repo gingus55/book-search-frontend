@@ -9,11 +9,6 @@ const SIGNUP = gql`
   mutation Mutation($input: AddUserInput!) {
     addUser(input: $input) {
       token
-      user {
-        _id
-        username
-        email
-      }
     }
   }
 `;

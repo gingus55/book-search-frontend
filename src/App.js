@@ -12,7 +12,7 @@ import SavedBooks from "./pages/SavedBooks";
 import Navbar from "./components/Navbar";
 
 const httpLink = createHttpLink({
-  uri: "http://localhost:4000/",
+  uri: process.env.REACT_APP_GRAPHQL_URL || "http://localhost:4000/",
 });
 
 const authLink = setContext((_, { headers }) => {
